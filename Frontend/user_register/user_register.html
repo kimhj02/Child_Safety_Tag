@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>NFC 정보 등록</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f4ff; }
+        .container { max-width: 400px; margin: 50px auto; background: #fff; border-radius: 10px; box-shadow: 0 4px 16px #0001; padding: 30px; }
+        h2 { text-align: center; color: #4a5fc1; }
+        label { display: block; margin-top: 15px; }
+        input, textarea { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
+        button { margin-top: 20px; width: 100%; padding: 12px; background: #4a5fc1; color: #fff; border: none; border-radius: 5px; font-size: 16px; }
+        button:hover { background: #35408f; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>NFC 정보 등록</h2>
+        <form id="registerForm">
+            <label for="uid">NFC UID</label>
+            <input type="text" id="uid" name="uid" required>
+
+            <label for="userId">사용자 ID</label>
+            <input type="text" id="userId" name="userId" required>
+
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phone">전화번호</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="address">주소</label>
+            <textarea id="address" name="address" rows="2"></textarea>
+
+            <label for="note">메모</label>
+            <textarea id="note" name="note" rows="2"></textarea>
+
+            <button type="submit">등록</button>
+        </form>
+    </div>
+    <script>
+        const API_BASE_URL = 'http://localhost:8080/api/nfc-tags';
+
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const nfcData = {
+                id: {
+                    uid: form.uid.value,
+                    userId: form.userId.value
+                },
+                name: form.name.value,
+                phone: form.phone.value,
+                address: form.address.value,
+                note: form.note.value
+            };
+            try {
+                const response = await fetch(API_BASE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(nfcData)
+                });
+                if (response.ok) {
+                    alert('등록 성공!');
+                    form.reset();
+                } else {
+                    const error = await response.text();
+                    alert('등록 실패: ' + error);
+                }
+            } catch (err) {
+                alert('서버 오류: ' + err);
+            }
+        });
+    </script>
+</body>
+</html> 

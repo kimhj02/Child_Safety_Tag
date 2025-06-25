@@ -2,6 +2,7 @@ package kr.ac.kumoh.ce.s20210353.Child.Safety.Tag.controller;
 
 import kr.ac.kumoh.ce.s20210353.Child.Safety.Tag.entity.NfcTag;
 import kr.ac.kumoh.ce.s20210353.Child.Safety.Tag.service.NfcTagService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class NfcTagController {
     }
 
     @GetMapping("/{uid}/{userId}")
-    public Optional<NfcTag> getById(@PathVariable String uid, @PathVariable String userId) {
+    public Optional<NfcTag> getById(@PathVariable("uid") String uid, @PathVariable("userId") String userId) {
         return service.findById(new NfcTag.NfcTagId(uid, userId));
     }
 
@@ -33,7 +34,12 @@ public class NfcTagController {
     }
 
     @DeleteMapping("/{uid}/{userId}")
-    public void delete(@PathVariable String uid, @PathVariable String userId) {
-        service.deleteById(new NfcTag.NfcTagId(uid, userId));
+    public ResponseEntity<Void> delete(@PathVariable("uid") String uid, @PathVariable("userId") String userId) {
+        boolean deleted = service.deleteById(new NfcTag.NfcTagId(uid, userId));
+        if (deleted) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -103,17 +103,16 @@ async function deleteNfcTag(uid, userId) {
     if (!confirm('정말로 이 태그를 삭제하시겠습니까?')) {
         return;
     }
-    
     try {
         const response = await fetch(`${API_BASE_URL}/${uid}/${userId}`, {
             method: 'DELETE'
         });
-        
         if (response.ok) {
             alert('태그가 성공적으로 삭제되었습니다!');
             loadNfcTags(); // 테이블 새로고침
         } else {
-            alert('삭제 실패: 알 수 없는 오류가 발생했습니다.');
+            const errorText = await response.text();
+            alert('삭제 실패: ' + errorText);
         }
     } catch (error) {
         console.error('Error:', error);

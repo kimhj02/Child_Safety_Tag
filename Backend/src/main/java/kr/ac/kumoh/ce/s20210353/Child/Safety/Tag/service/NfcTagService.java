@@ -27,7 +27,11 @@ public class NfcTagService {
         return repository.save(tag);
     }
 
-    public void deleteById(NfcTag.NfcTagId id) {
-        repository.deleteById(id);
+    public boolean deleteById(NfcTag.NfcTagId id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 } 
