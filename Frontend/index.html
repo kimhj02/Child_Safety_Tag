@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFC 기반 미아 방지 시스템</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>NFC 기반 미아 방지 시스템</h1>
+        
+        <!-- 등록 폼 -->
+        <div class="form-section">
+            <h2>태그 정보 등록</h2>
+            <form id="nfcForm">
+                <div class="form-group">
+                    <label for="uid">NFC UID:</label>
+                    <input type="text" id="uid" name="uid" required>
+                </div>
+                <div class="form-group">
+                    <label for="userId">사용자 ID:</label>
+                    <input type="text" id="userId" name="userId" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">이름:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">전화번호:</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">주소:</label>
+                    <textarea id="address" name="address" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="note">메모:</label>
+                    <textarea id="note" name="note" rows="3"></textarea>
+                </div>
+                <button type="submit">등록</button>
+            </form>
+        </div>
+
+        <!-- 출력 테이블 -->
+        <div class="table-section">
+            <h2>등록된 태그 정보</h2>
+            <button id="refreshBtn">새로고침</button>
+            <table id="nfcTable">
+                <thead>
+                    <tr>
+                        <th>NFC UID</th>
+                        <th>사용자 ID</th>
+                        <th>이름</th>
+                        <th>전화번호</th>
+                        <th>주소</th>
+                        <th>메모</th>
+                        <th>등록일</th>
+                        <th>삭제</th>
+                    </tr>
+                </thead>
+                <tbody id="nfcTableBody">
+                    <!-- 데이터가 여기에 동적으로 추가됩니다 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

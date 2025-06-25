@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/nfc-tags")
 public class NfcTagController {
@@ -35,4 +36,4 @@ public class NfcTagController {
     public void delete(@PathVariable String uid, @PathVariable String userId) {
         service.deleteById(new NfcTag.NfcTagId(uid, userId));
     }
-} 
+}
