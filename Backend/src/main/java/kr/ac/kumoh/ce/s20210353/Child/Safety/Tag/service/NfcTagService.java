@@ -34,4 +34,8 @@ public class NfcTagService {
         }
         return false;
     }
+
+    public Optional<NfcTag> findByUid(String uid) {
+        return repository.findFirstByIdUid(uid);
+    }
 } 
