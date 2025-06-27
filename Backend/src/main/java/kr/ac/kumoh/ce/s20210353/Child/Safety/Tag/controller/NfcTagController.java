@@ -42,4 +42,10 @@ public class NfcTagController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/uid/{uid}")
+    public ResponseEntity<NfcTag> getByUid(@PathVariable("uid") String uid) {
+        Optional<NfcTag> tag = service.findByUid(uid);
+        return tag.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }
