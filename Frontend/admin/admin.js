@@ -2,13 +2,26 @@
 const API_BASE_URL = 'http://localhost:8080/api/nfc-tags';
 
 // DOM 요소들
-
 const nfcForm = document.getElementById('nfcForm');
 const nfcTableBody = document.getElementById('nfcTableBody');
 const refreshBtn = document.getElementById('refreshBtn');
+const adminUsername = document.getElementById('adminUsername');
 
-// 페이지 로드 시 데이터 로드
+// 페이지 로드 시 로그인 상태 확인 및 데이터 로드
 document.addEventListener('DOMContentLoaded', function() {
+    // 로그인 상태 확인
+    if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
+        alert('로그인이 필요합니다.');
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // 관리자 이름 표시
+    const username = sessionStorage.getItem('adminUsername');
+    if (username) {
+        adminUsername.textContent = `${username} 관리자님`;
+    }
+    
     loadNfcTags();
     
     // 폼 제출 이벤트
@@ -17,6 +30,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // 새로고침 버튼 이벤트
     refreshBtn.addEventListener('click', loadNfcTags);
 });
+
+// 로그아웃 함수
+function logout() {
+    if (confirm('정말로 로그아웃하시겠습니까?')) {
+        sessionStorage.removeItem('adminLoggedIn');
+        sessionStorage.removeItem('adminUsername');
+        window.location.href = 'login.html';
+    }
+}
 
 // 폼 제출 처리
 async function handleFormSubmit(event) {
