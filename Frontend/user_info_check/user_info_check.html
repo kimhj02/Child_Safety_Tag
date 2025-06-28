@@ -7,56 +7,91 @@
         body { font-family: 'Segoe UI', sans-serif; background: #f0f4ff; }
         .container { max-width: 400px; margin: 50px auto; background: #fff; border-radius: 10px; box-shadow: 0 4px 16px #0001; padding: 30px; }
         h2 { text-align: center; color: #4a5fc1; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #4a5fc1;
+        }
         .info { margin-top: 20px; }
         .info label { font-weight: bold; }
         .info div { margin-bottom: 10px; }
-        #searchBtn { margin-top: 10px; width: 100%; padding: 10px; background: #4a5fc1; color: #fff; border: none; border-radius: 5px; font-size: 16px; }
+        #searchBtn {
+            margin-top: 10px;
+            width: 100%;
+            padding: 12px;
+            background: #4a5fc1;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
         #searchBtn:hover { background: #35408f; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>NFC 정보 확인</h2>
-        <form id="checkForm">
+<div class="container">
+    <h2>NFC 정보 확인</h2>
+    <form id="checkForm">
+        <div class="form-group">
             <label for="uid">NFC UID</label>
             <input type="text" id="uid" name="uid" required>
+        </div>
+        <div class="form-group">
             <label for="userId">사용자 ID</label>
             <input type="text" id="userId" name="userId" required>
-            <button type="submit" id="searchBtn">정보 조회</button>
-        </form>
-        <div class="info" id="infoBox" style="display:none;">
-            <div><label>이름:</label> <span id="name"></span></div>
-            <div><label>전화번호:</label> <span id="phone"></span></div>
-            <div><label>주소:</label> <span id="address"></span></div>
-            <div><label>메모:</label> <span id="note"></span></div>
-            <div><label>등록일:</label> <span id="createdAt"></span></div>
         </div>
+        <button type="submit" id="searchBtn">정보 조회</button>
+    </form>
+    <div class="info" id="infoBox" style="display:none;">
+        <div><label>이름:</label> <span id="name"></span></div>
+        <div><label>전화번호:</label> <span id="phone"></span></div>
+        <div><label>주소:</label> <span id="address"></span></div>
+        <div><label>메모:</label> <span id="note"></span></div>
+        <div><label>등록일:</label> <span id="createdAt"></span></div>
     </div>
-    <script>
-        const API_BASE_URL = 'http://localhost:8080/api/nfc-tags';
+</div>
+<script>
+    const API_BASE_URL = 'http://localhost:8080/api/nfc-tags';
 
-        document.getElementById('checkForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const uid = e.target.uid.value;
-            const userId = e.target.userId.value;
-            try {
-                const response = await fetch(`${API_BASE_URL}/${uid}/${userId}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    document.getElementById('infoBox').style.display = 'block';
-                    document.getElementById('name').textContent = data.name || '-';
-                    document.getElementById('phone').textContent = data.phone || '-';
-                    document.getElementById('address').textContent = data.address || '-';
-                    document.getElementById('note').textContent = data.note || '-';
-                    document.getElementById('createdAt').textContent = data.createdAt ? new Date(data.createdAt).toLocaleString('ko-KR') : '-';
-                } else {
-                    document.getElementById('infoBox').style.display = 'none';
-                    alert('정보를 찾을 수 없습니다.');
-                }
-            } catch (err) {
-                alert('서버 오류: ' + err);
+    document.getElementById('checkForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const uid = e.target.uid.value;
+        const userId = e.target.userId.value;
+        try {
+            const response = await fetch(`${API_BASE_URL}/${uid}/${userId}`);
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('infoBox').style.display = 'block';
+                document.getElementById('name').textContent = data.name || '-';
+                document.getElementById('phone').textContent = data.phone || '-';
+                document.getElementById('address').textContent = data.address || '-';
+                document.getElementById('note').textContent = data.note || '-';
+                document.getElementById('createdAt').textContent = data.createdAt ? new Date(data.createdAt).toLocaleString('ko-KR') : '-';
+            } else {
+                document.getElementById('infoBox').style.display = 'none';
+                alert('정보를 찾을 수 없습니다.');
             }
-        });
-    </script>
+        } catch (err) {
+            alert('서버 오류: ' + err);
+        }
+    });
+</script>
 </body>
-</html> 
+</html>
